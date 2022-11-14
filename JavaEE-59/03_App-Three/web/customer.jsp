@@ -29,10 +29,10 @@
 <%
 
     ArrayList<CustomerDTO> allCustomers= new ArrayList();
-    allCustomers.add(new CustomerDTO("C001","Dasun","Kaluthara",1000));
-    allCustomers.add(new CustomerDTO("C002","Kamal","Panadura",2000));
-    allCustomers.add(new CustomerDTO("C003","Tamalsha","Galle",3000));
-    allCustomers.add(new CustomerDTO("C004","Ranjith","Colombo",4000));
+//    allCustomers.add(new CustomerDTO("C001","Dasun","Kaluthara",1000));
+//    allCustomers.add(new CustomerDTO("C002","Kamal","Panadura",2000));
+//    allCustomers.add(new CustomerDTO("C003","Tamalsha","Galle",3000));
+//    allCustomers.add(new CustomerDTO("C004","Ranjith","Colombo",4000));
 
 %>
 
@@ -103,9 +103,7 @@
                         <td><%=customer.getName()%></td>
                         <td><%=customer.getAddress()%></td>
                         <td><%=customer.getSalary()%></td>
-
                     </tr>
-
                     <%
                         }
                     %>
