@@ -103,7 +103,8 @@
                 </thead>
                 <tbody id="tblCustomer">
                     <%
-                        for (CustomerDTO customer : allCustomers) {
+                        if  (allCustomers!=null){
+                            for (CustomerDTO customer : allCustomers) {
                     %>
                     <tr>
                         <td><%=customer.getId()%></td>
@@ -112,6 +113,7 @@
                         <td><%=customer.getSalary()%></td>
                     </tr>
                     <%
+                            }
                         }
                     %>
                 </tbody>
