@@ -33,17 +33,7 @@
 <%
     ArrayList<CustomerDTO> allCustomers= new ArrayList();
 
-    Class.forName("com.mysql.jdbc.Driver");
-    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
-    PreparedStatement psmt = connection.prepareStatement("select * from Customer");
-    ResultSet rst = psmt.executeQuery();
-    while (rst.next()) {
-        String id = rst.getString("id");
-        String name = rst.getString("name");
-        String address = rst.getString("address");
-        double salary = rst.getDouble("salary");
-        allCustomers.add(new CustomerDTO(id,name,address,salary));
-    }
+
 
 
 
@@ -94,7 +84,7 @@
             </div>
             </form>
             <div class="btn-group">
-                <button class="btn btn-primary" id="btnCustomer" form="customerForm" formmethod="post" formaction="customer?option=add"  >Save Customer</button>
+                <button class="btn btn-primary" id="btnCustomer" form="customerForm" formmethod="post" formaction="customer?option=add" >Save Customer</button>
                 <button class="btn btn-danger" id="btnCusDelete" form="customerForm" formmethod="post" formaction="customer?option=delete">Remove</button>
                 <button class="btn btn-warning" id="btnUpdate" form="customerForm" formmethod="post" formaction="customer?option=update">Update</button>
                 <button class="btn btn-success" id="btnGetAll" form="customerForm" formmethod="get" formaction="customer.jsp">Get All</button>

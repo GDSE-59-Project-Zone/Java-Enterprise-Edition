@@ -1,22 +1,44 @@
 package servlet;
 
+import model.CustomerDTO;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            ArrayList<CustomerDTO> allCustomers = new ArrayList();
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+            PreparedStatement psmt = connection.prepareStatement("select * from Customer");
+            ResultSet rst = psmt.executeQuery();
+            while (rst.next()) {
+                String id = rst.getString("id");
+                String name = rst.getString("name");
+                String address = rst.getString("address");
+                double salary = rst.getDouble("salary");
+                allCustomers.add(new CustomerDTO(id, name, address, salary));
+            }
 
+            req.setAttribute("customers",allCustomers);
+
+//            resp.sendRedirect("customer.jsp");
+            req.getRequestDispatcher("customer.jsp").forward(req,resp);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
