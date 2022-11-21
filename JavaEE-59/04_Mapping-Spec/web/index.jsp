@@ -13,13 +13,13 @@
 <body>
 <h1>Mapping Spec In Servlet Specification</h1>
 <h2>Mapping Methods</h2>
-<ul>
+<ol>
     <li>Exact Mapping</li>
     <li>Default Mapping</li>
     <li>Empty String Mapping</li>
     <li>Wild Card Mapping</li>
     <li>Extension Mapping</li>
     <li>Multiple URL Mapping</li>
-</ul>
+</ol>
 </body>
 </html>
