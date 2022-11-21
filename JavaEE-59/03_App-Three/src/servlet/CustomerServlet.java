@@ -25,22 +25,35 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String address = req.getParameter("address");
         String salary = req.getParameter("salary");
+        String option = req.getParameter("option");
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
-            PreparedStatement psmt = connection.prepareStatement("insert into Customer values(?,?,?,?)");
-            psmt.setObject(1,id);
-            psmt.setObject(2,name);
-            psmt.setObject(3,address);
-            psmt.setObject(4,salary);
-            boolean execute = psmt.executeUpdate()>0;
-            resp.getWriter().write("<h1>"+execute+"</h1>");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        switch (option){
+            case "delete":
+
+                break;
+            case "add":
+                try {
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+                    PreparedStatement psmt = connection.prepareStatement("insert into Customer values(?,?,?,?)");
+                    psmt.setObject(1,id);
+                    psmt.setObject(2,name);
+                    psmt.setObject(3,address);
+                    psmt.setObject(4,salary);
+                    boolean execute = psmt.executeUpdate()>0;
+                    resp.getWriter().write("<h1>"+execute+"</h1>");
+
+
+                    resp.sendRedirect("customer.jsp");
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                break;
         }
+
 
 
     }

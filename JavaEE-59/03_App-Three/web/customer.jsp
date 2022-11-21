@@ -1,5 +1,9 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.CustomerDTO" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
 <%--
   Created by IntelliJ IDEA.
   User: sanu
@@ -27,9 +31,23 @@
 <body>
 
 <%
-
     ArrayList<CustomerDTO> allCustomers= new ArrayList();
-//    allCustomers.add(new CustomerDTO("C001","Dasun","Kaluthara",1000));
+
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+    PreparedStatement psmt = connection.prepareStatement("select * from Customer");
+    ResultSet rst = psmt.executeQuery();
+    while (rst.next()) {
+        String id = rst.getString("id");
+        String name = rst.getString("name");
+        String address = rst.getString("address");
+        double salary = rst.getDouble("salary");
+        allCustomers.add(new CustomerDTO(id,name,address,salary));
+    }
+
+
+
+//
 //    allCustomers.add(new CustomerDTO("C002","Kamal","Panadura",2000));
 //    allCustomers.add(new CustomerDTO("C003","Tamalsha","Galle",3000));
 //    allCustomers.add(new CustomerDTO("C004","Ranjith","Colombo",4000));
@@ -76,10 +94,10 @@
             </div>
             </form>
             <div class="btn-group">
-                <button class="btn btn-primary" id="btnCustomer" formaction="customer" formmethod="post" form="customerForm">Save Customer</button>
-                <button class="btn btn-danger" id="btnCusDelete">Remove</button>
+                <button class="btn btn-primary" id="btnCustomer" formaction="customer?option=add" formmethod="post" form="customerForm">Save Customer</button>
+                <button class="btn btn-danger" id="btnCusDelete" form="customerForm" formaction="customer" formmethod="post">Remove</button>
                 <button class="btn btn-warning" id="btnUpdate">Update</button>
-                <button class="btn btn-success" id="btnGetAll">Get All</button>
+                <button class="btn btn-success" id="btnGetAll" form="customerForm" formaction="customer.jsp">Get All</button>
                 <button class="btn btn-danger" id="btn-clear1">Clear All</button>
             </div>
 
