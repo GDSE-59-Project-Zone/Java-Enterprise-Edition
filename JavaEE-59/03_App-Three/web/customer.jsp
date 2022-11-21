@@ -94,10 +94,10 @@
             </div>
             </form>
             <div class="btn-group">
-                <button class="btn btn-primary" id="btnCustomer" formaction="customer?option=add" formmethod="post" form="customerForm">Save Customer</button>
-                <button class="btn btn-danger" id="btnCusDelete" form="customerForm" formaction="customer" formmethod="post">Remove</button>
-                <button class="btn btn-warning" id="btnUpdate">Update</button>
-                <button class="btn btn-success" id="btnGetAll" form="customerForm" formaction="customer.jsp">Get All</button>
+                <button class="btn btn-primary" id="btnCustomer" form="customerForm" formmethod="post" formaction="customer?option=add"  >Save Customer</button>
+                <button class="btn btn-danger" id="btnCusDelete" form="customerForm" formmethod="post" formaction="customer?option=delete">Remove</button>
+                <button class="btn btn-warning" id="btnUpdate" form="customerForm" formmethod="post" formaction="customer?option=update">Update</button>
+                <button class="btn btn-success" id="btnGetAll" form="customerForm" formmethod="get" formaction="customer.jsp">Get All</button>
                 <button class="btn btn-danger" id="btn-clear1">Clear All</button>
             </div>
 

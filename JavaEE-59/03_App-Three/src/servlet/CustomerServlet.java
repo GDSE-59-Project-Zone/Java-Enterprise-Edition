@@ -26,35 +26,38 @@ public class CustomerServlet extends HttpServlet {
         String address = req.getParameter("address");
         String salary = req.getParameter("salary");
         String option = req.getParameter("option");
-
-        switch (option){
-            case "delete":
-
-                break;
-            case "add":
-                try {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
-                    PreparedStatement psmt = connection.prepareStatement("insert into Customer values(?,?,?,?)");
-                    psmt.setObject(1,id);
-                    psmt.setObject(2,name);
-                    psmt.setObject(3,address);
-                    psmt.setObject(4,salary);
-                    boolean execute = psmt.executeUpdate()>0;
-                    resp.getWriter().write("<h1>"+execute+"</h1>");
-
-
-                    resp.sendRedirect("customer.jsp");
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-
-                break;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+            switch (option) {
+                case "delete":
+                    PreparedStatement pstm1 = connection.prepareStatement("delete from Customer where id=?");
+                    pstm1.setObject(1, id);
+                    boolean execute = pstm1.executeUpdate() > 0;
+                    break;
+                case "add":
+                    PreparedStatement pstm2 = connection.prepareStatement("insert into Customer values(?,?,?,?)");
+                    pstm2.setObject(1, id);
+                    pstm2.setObject(2, name);
+                    pstm2.setObject(3, address);
+                    pstm2.setObject(4, salary);
+                    boolean execute2 = pstm2.executeUpdate() > 0;
+                    break;
+                case "update":
+                    PreparedStatement pstm3 = connection.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
+                    pstm3.setObject(4, id);
+                    pstm3.setObject(1, name);
+                    pstm3.setObject(2, address);
+                    pstm3.setObject(3, salary);
+                    boolean execute3 = pstm3.executeUpdate() > 0;
+                    break;
+            }
+            resp.sendRedirect("customer.jsp");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-
 
     }
 }
