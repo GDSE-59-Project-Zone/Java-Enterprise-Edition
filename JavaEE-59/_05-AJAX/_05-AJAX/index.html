@@ -17,14 +17,29 @@
 
     let btn=document.getElementById("btn");
     btn.addEventListener("click",function(){
+
         var http= new XMLHttpRequest();
+        console.log(http.status,http.readyState);
+
         http.open("get","db/db.txt");
+        console.log(http.status,http.readyState);
+
         http.send();
+        console.log(http.status,http.readyState);
 
         http.onreadystatechange=function(){
-            console.log("Response :",http.responseText);
-            document.getElementById("display").innerText=http.responseText;
+            if (http.readyState==4 && http.status==200){
+                console.log("Data",http.status,http.readyState);
+                console.log("Response Inner :",http.responseText);
+            }
         }
+
+        console.log("Response Outer :",http.responseText);
+        console.log(http.status,http.readyState);
+
+
+
+
 
     });
 
