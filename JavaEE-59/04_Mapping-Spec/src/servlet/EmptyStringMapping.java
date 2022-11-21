@@ -12,5 +12,6 @@ public class EmptyStringMapping extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Empty String Mapping Invoked");
+        resp.getWriter().write("Empty String Mapping Invoked");
     }
 }

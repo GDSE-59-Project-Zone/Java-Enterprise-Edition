@@ -12,5 +12,6 @@ public class MappingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Mapping Servlet Invoked");
+        resp.getWriter().write("Mapping Servlet Invoked");
     }
 }
