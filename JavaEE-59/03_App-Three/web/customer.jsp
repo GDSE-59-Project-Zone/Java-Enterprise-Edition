@@ -31,10 +31,9 @@
 <body>
 
 <%
-    ArrayList<CustomerDTO> allCustomers= new ArrayList();
 
-
-
+    ArrayList<CustomerDTO>  allCustomers = (ArrayList<CustomerDTO>) request.getAttribute("customers");
+//    ArrayList<CustomerDTO> allCustomers= new ArrayList();
 
 
 //
