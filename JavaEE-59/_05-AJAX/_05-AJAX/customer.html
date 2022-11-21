@@ -11,35 +11,38 @@
 
 <button id="btn">Send</button>
 
+
+<script src="assets/js/jquery-3.6.1.min.js"></script>
 <script>
 
-   let btn= document.getElementById("btn");
-   btn.addEventListener('click',function(){
+   // let btn= document.getElementById("btn");
+   // btn.addEventListener('click',function(){
+   //     //01 Create object using XMLHTTPRequest Function
+   //     let http= new XMLHttpRequest();
+   //     //02. Check the request readyStatus
+   //     // http.readyState;//0 (uninitialised)
+   //
+   //     http.open("get","db/db.txt");
+   //     // http.readyState;//1 (loading)
+   //
+   //     http.send();
+   //     // http.readyState;//1 (loading)
+   //
+   //     http.onreadystatechange=function (){
+   //         if (http.readyState==4 && http.status==200){
+   //             document.getElementById("display").innerText=http.responseText;
+   //         }
+   //     }
+   // });
 
-
-       //01 Create object using XMLHTTPRequest Function
-       let http= new XMLHttpRequest();
-
-       //02. Check the request readyStatus
-       // http.readyState;//0 (uninitialised)
-
-       http.open("get","db/db.txt");
-       // http.readyState;//1 (loading)
-
-       http.send();
-       // http.readyState;//1 (loading)
-
-       http.onreadystatechange=function (){
-           if (http.readyState==4 && http.status==200){
-               document.getElementById("display").innerText=http.responseText;
+   $("#btn").click(function(){
+       $.ajax({
+           url:"db/db.txt",
+           success:function (resp){
+               console.log(resp);
+               $("#display").text(resp);
            }
-       }
-
-
-
-
-
-
+       });
    });
 
 </script>

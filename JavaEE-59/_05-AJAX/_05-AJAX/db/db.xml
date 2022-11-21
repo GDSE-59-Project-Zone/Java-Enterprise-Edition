@@ -1,0 +1,14 @@
+<customers>
+    <customer>
+        <id>C001</id>
+        <name>Dasun</name>
+        <address>Galle</address>
+        <salary>1000.00</salary>
+    </customer>
+    <customer>
+        <id>C002</id>
+        <name>Ramal</name>
+        <address>Panadura</address>
+        <salary>2000.00</salary>
+    </customer>
+</customers>
