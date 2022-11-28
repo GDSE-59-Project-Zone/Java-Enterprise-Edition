@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Hello There.!</h1>
+<h1 id="display">Print Here..</h1>
+
+
+<button id="btn">Send</button>
+
+
+<script src="assets/js/jquery-3.6.1.min.js"></script>
+<script>
+
+   // let btn= document.getElementById("btn");
+   // btn.addEventListener('click',function(){
+   //     //01 Create object using XMLHTTPRequest Function
+   //     let http= new XMLHttpRequest();
+   //     //02. Check the request readyStatus
+   //     // http.readyState;//0 (uninitialised)
+   //
+   //     http.open("get","db/db.txt");
+   //     // http.readyState;//1 (loading)
+   //
+   //     http.send();
+   //     // http.readyState;//1 (loading)
+   //
+   //     http.onreadystatechange=function (){
+   //         if (http.readyState==4 && http.status==200){
+   //             document.getElementById("display").innerText=http.responseText;
+   //         }
+   //     }
+   // });
+
+   $("#btn").click(function(){
+       console.log("Started")
+       $.ajax({
+           url:"db/db.txt",
+           async:true,//synchronous (false)
+           success:function (res){
+               console.log(res);
+               $("#display").text(res);
+           }
+       });
+
+       console.log("Ended")
+
+   });
+
+
+
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <customers>
     <customer>
-        <id>C001</id>
+        <id state="true">C001</id>
         <name>Dasun</name>
         <address>Galle</address>
         <salary>1000.00</salary>
