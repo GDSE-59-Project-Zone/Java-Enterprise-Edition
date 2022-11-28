@@ -15,30 +15,29 @@
 
 <script>
 
-    let btn=document.getElementById("btn");
-    btn.addEventListener("click",function(){
+    let btn = document.getElementById("btn");
+    btn.addEventListener("click", function () {
 
-        var http= new XMLHttpRequest();
-        console.log(http.status,http.readyState);
+        console.log("Started")
 
-        http.open("get","db/db.txt");
-        console.log(http.status,http.readyState);
-
+        let http = new XMLHttpRequest();
+        //Synchronous means blocking
+        //Asynchronous means non-blocking
+        //if the third argument is set to false then it is synchronous
+        //by default it is true and ajax is one of the Asynchronous APIS
+        http.open("get","db/db.txt",true);
         http.send();
-        console.log(http.status,http.readyState);
 
-        http.onreadystatechange=function(){
-            if (http.readyState==4 && http.status==200){
-                console.log("Data",http.status,http.readyState);
-                console.log("Response Inner :",http.responseText);
+        console.log(http.readyState,http.status); //(false) 4 200 //true 1 0
+
+        http.onreadystatechange=function (){
+            console.log("State Changed",http.readyState,http.status);
+            if(http.readyState==4 && http.status==200){
+                console.log(http.responseText);
             }
         }
 
-        console.log("Response Outer :",http.responseText);
-        console.log(http.status,http.readyState);
-
-
-
+        console.log("Ended")
 
 
     });
