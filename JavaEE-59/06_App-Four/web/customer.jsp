@@ -349,6 +349,18 @@
         });
     });
 
+    $("#btnGetAll").click(function () {
+
+
+        //send ajax request to the customer servlet
+        $.ajax({
+            url: "customer",
+            success:function(resp){
+                console.log(resp);
+            }
+        });
+    });
+
 </script>
 </body>
 </html>

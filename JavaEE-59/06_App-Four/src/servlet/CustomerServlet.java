@@ -30,10 +30,22 @@ public class CustomerServlet extends HttpServlet {
                 allCustomers.add(new CustomerDTO(id, name, address, salary));
             }
 
-            req.setAttribute("customers",allCustomers);
+            //json format
+            String customersJSON = "[";
+            for (CustomerDTO customer : allCustomers) {
+                String id = customer.getId();
+                String name = customer.getName();
+                String address = customer.getAddress();
+                double salary = customer.getSalary();
+                String cusOb="{\"id\":\""+id+"\",\"name\":\""+name+"\",\"address\":\""+address+"\",\"salary\":"+salary+"},";
+                customersJSON+=cusOb;
+            }
+            String substring = customersJSON.substring(0, customersJSON.length() - 1);
+            substring+="]";
 
-//            resp.sendRedirect("customer.jsp");
-            req.getRequestDispatcher("customer.jsp").forward(req,resp);
+            resp.getWriter().write(substring);
+
+
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
@@ -74,7 +86,6 @@ public class CustomerServlet extends HttpServlet {
                     boolean execute3 = pstm3.executeUpdate() > 0;
                     break;
             }
-            resp.sendRedirect("customer");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
