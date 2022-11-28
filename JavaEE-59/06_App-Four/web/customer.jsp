@@ -32,7 +32,7 @@
 
 <%
 
-    ArrayList<CustomerDTO>  allCustomers = (ArrayList<CustomerDTO>) request.getAttribute("customers");
+    ArrayList<CustomerDTO> allCustomers = (ArrayList<CustomerDTO>) request.getAttribute("customers");
 //    ArrayList<CustomerDTO> allCustomers= new ArrayList();
 
 
@@ -61,33 +61,33 @@
         <div class="col-4">
             <h1>Customer Registraion</h1>
             <form id="customerForm">
-            <div class="form-group">
-                <label for="txtCustomerID">Customer ID</label>
-                <input class="form-control" id="txtCustomerID"  type="text" name="id">
-                <span class="control-error" id="lblcusid"></span>
-            </div>
-            <div class="form-group">
-                <label for="txtCustomerName">Customer Name</label>
-                <input class="form-control" id="txtCustomerName" type="text" name="name">
-                <span class="control-error" id="lblcusname"></span>
-            </div>
-            <div class="form-group">
-                <label for="txtCustomerAddress">Customer Address</label>
-                <input class="form-control" id="txtCustomerAddress" type="text" name="address">
-                <span class="control-error" id="lblcusaddress"></span>
-            </div>
-            <div class="form-group">
-                <label for="txtCustomerSalary">Customer Salary</label>
-                <input class="form-control" id="txtCustomerSalary" type="text" name="salary">
-                <span class="control-error" id="lblcussalary"></span>
-            </div>
+                <div class="form-group">
+                    <label for="txtCustomerID">Customer ID</label>
+                    <input class="form-control" id="txtCustomerID" type="text" name="id">
+                    <span class="control-error" id="lblcusid"></span>
+                </div>
+                <div class="form-group">
+                    <label for="txtCustomerName">Customer Name</label>
+                    <input class="form-control" id="txtCustomerName" type="text" name="name">
+                    <span class="control-error" id="lblcusname"></span>
+                </div>
+                <div class="form-group">
+                    <label for="txtCustomerAddress">Customer Address</label>
+                    <input class="form-control" id="txtCustomerAddress" type="text" name="address">
+                    <span class="control-error" id="lblcusaddress"></span>
+                </div>
+                <div class="form-group">
+                    <label for="txtCustomerSalary">Customer Salary</label>
+                    <input class="form-control" id="txtCustomerSalary" type="text" name="salary">
+                    <span class="control-error" id="lblcussalary"></span>
+                </div>
             </form>
             <div class="btn-group">
-                <button class="btn btn-primary" id="btnCustomer" form="customerForm" formmethod="post" formaction="customer?option=add" >Save Customer</button>
-                <button class="btn btn-danger" id="btnCusDelete" form="customerForm" formmethod="post" formaction="customer?option=delete">Remove</button>
-                <button class="btn btn-warning" id="btnUpdate" form="customerForm" formmethod="post" formaction="customer?option=update">Update</button>
-                <button class="btn btn-success" id="btnGetAll" form="customerForm" formmethod="get" formaction="customer">Get All</button>
-                <button class="btn btn-danger" id="btn-clear1">Clear All</button>
+                <button class="btn btn-primary" id="btnCustomer" type="button">Save Customer</button>
+                <button class="btn btn-danger" id="btnCusDelete" type="button">Remove</button>
+                <button class="btn btn-warning" id="btnUpdate" type="button">Update</button>
+                <button class="btn btn-success" id="btnGetAll" type="button">Get All</button>
+                <button class="btn btn-danger" id="btn-clear1" type="button">Clear All</button>
             </div>
 
         </div>
@@ -102,20 +102,24 @@
                 </tr>
                 </thead>
                 <tbody id="tblCustomer">
-                    <%
-                        if  (allCustomers!=null){
-                            for (CustomerDTO customer : allCustomers) {
-                    %>
-                    <tr>
-                        <td><%=customer.getId()%></td>
-                        <td><%=customer.getName()%></td>
-                        <td><%=customer.getAddress()%></td>
-                        <td><%=customer.getSalary()%></td>
-                    </tr>
-                    <%
-                            }
+                <%
+                    if (allCustomers != null) {
+                        for (CustomerDTO customer : allCustomers) {
+                %>
+                <tr>
+                    <td><%=customer.getId()%>
+                    </td>
+                    <td><%=customer.getName()%>
+                    </td>
+                    <td><%=customer.getAddress()%>
+                    </td>
+                    <td><%=customer.getSalary()%>
+                    </td>
+                </tr>
+                <%
                         }
-                    %>
+                    }
+                %>
                 </tbody>
             </table>
         </div>
@@ -316,6 +320,34 @@
     //     }
     //
     // }
+
+
+    // $("#btnCustomer").click(function(){
+    //
+    //     let customerID = $("#txtCustomerID").val();
+    //     let customerName = $("#txtCustomerName").val();
+    //     let customerAddress = $("#txtCustomerAddress").val();
+    //     let customerSalary = $("#txtCustomerSalary").val();
+    //
+    //     //send ajax request to the customer servlet
+    //     $.ajax({
+    //         url:"customer?id="+customerID+"&name="+customerName,
+    //     });
+    // });
+
+
+    $("#btnCustomer").click(function () {
+
+        var formData = $("#customerForm").serialize();
+        // will generate a query String including form data
+
+        //send ajax request to the customer servlet
+        $.ajax({
+            url: "customer?option=add",
+            method:"post",
+            data:formData
+        });
+    });
 
 </script>
 </body>
