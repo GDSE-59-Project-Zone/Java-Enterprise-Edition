@@ -99,6 +99,7 @@
     $("#btnXML").click(function () {
         //enable the loader
         $("#loader").css('display', 'block');
+        $("#tblCustomer").empty();
         $.ajax({
             url: "db/db.xml",
             success: function (resp) {
@@ -106,7 +107,7 @@
                 //remove the loader
                 $("#loader").css('display', 'none');
 
-                $("#tblCustomer").empty();
+
                 let customerCount = $(resp).children("customers").children().length;
                 var customers = $(resp).children("customers").children();
 
@@ -125,9 +126,19 @@
     });
 
 
+    $("#btnJSON").click(function () {
+        $("#loader").css('display', 'block');
+        $("#tblCustomer").empty();
+        $.ajax({
+            url:"db/db.json",
+            success:function (resp){
+                $("#loader").css('display', 'none');
+                for (let cus of resp) {
+                    $("#tblCustomer").append(`<tr><td>${cus.id}</td><td>${cus.name}</td><td>${cus.address}</td><td>${cus.salary}</td></tr>`);
+                }
 
-    $("#btnJSON").click(function (){
-
+            }
+        });
     });
 
 </script>

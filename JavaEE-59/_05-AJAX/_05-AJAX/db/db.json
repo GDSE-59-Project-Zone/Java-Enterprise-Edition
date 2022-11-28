@@ -1,6 +1,14 @@
-{
-  "id": "C001",
-  "name": "Kasun",
-  "address": "Galle",
-  "salary": 1000
-}
+[
+  {
+    "id": "C001",
+    "name": "Kasun",
+    "address": "Galle",
+    "salary": 1000
+  },
+  {
+    "id": "C002",
+    "name": "Ramal",
+    "address": "Panadura",
+    "salary": 2000
+  }
+]
