@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer Manage</title>
+    <title>AJAX- Asynchronous JavaScript and XML </title>
     <meta content="width=device-width initial-scale=1" name="viewport">
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/styles.css" rel="stylesheet">
@@ -32,7 +32,7 @@
 <main class="container-fluid" id="customerContent">
     <section class="row">
         <div class="col-4">
-            <h1>Customer Registraion</h1>
+            <h1>AJAX vs Formats</h1>
             <form id="customerForm">
                 <div class="form-group">
                     <label for="txtCustomerID">Customer ID</label>
@@ -56,19 +56,13 @@
                 </div>
             </form>
             <div class="btn-group">
-                <button type="button" class="btn btn-primary" id="btnCustomer" form="customerForm" formmethod="post"
-                        formaction="customer?option=add">Save Customer
+                <button type="button" class="btn btn-primary" id="btnXML" form="customerForm" formmethod="post"
+                        formaction="customer?option=add">AJAX with XML
                 </button>
-                <button class="btn btn-danger" id="btnCusDelete" form="customerForm" formmethod="post"
-                        formaction="customer?option=delete">Remove
+                <button type="button" class="btn btn-danger" id="btnJSON" form="customerForm" formmethod="post"
+                        formaction="customer?option=delete">AJAX with JSON
                 </button>
-                <button class="btn btn-warning" id="btnUpdate" form="customerForm" formmethod="post"
-                        formaction="customer?option=update">Update
-                </button>
-                <button type="button" class="btn btn-success" id="btnGetAll" form="customerForm" formmethod="get"
-                        formaction="customer">Get All
-                </button>
-                <button class="btn btn-danger" id="btn-clear1">Clear All</button>
+
             </div>
 
         </div>
@@ -102,7 +96,7 @@
 <script>
 
     //Use XML format to transfer data using AJAX
-    $("#btnGetAll").click(function () {
+    $("#btnXML").click(function () {
         //enable the loader
         $("#loader").css('display', 'block');
         $.ajax({
@@ -130,6 +124,11 @@
 
     });
 
+
+
+    $("#btnJSON").click(function (){
+
+    });
 
 </script>
 </body>
