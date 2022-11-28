@@ -2,6 +2,9 @@ package servlet;
 
 import model.CustomerDTO;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,19 +34,34 @@ public class CustomerServlet extends HttpServlet {
             }
 
             //json format
-            String customersJSON = "[";
-            for (CustomerDTO customer : allCustomers) {
-                String id = customer.getId();
-                String name = customer.getName();
-                String address = customer.getAddress();
-                double salary = customer.getSalary();
-                String cusOb="{\"id\":\""+id+"\",\"name\":\""+name+"\",\"address\":\""+address+"\",\"salary\":"+salary+"},";
-                customersJSON+=cusOb;
-            }
-            String substring = customersJSON.substring(0, customersJSON.length() - 1);
-            substring+="]";
+//            String customersJSON = "[";
+//            for (CustomerDTO customer : allCustomers) {
+//                String id = customer.getId();
+//                String name = customer.getName();
+//                String address = customer.getAddress();
+//                double salary = customer.getSalary();
+//                String cusOb="{\"id\":\""+id+"\",\"name\":\""+name+"\",\"address\":\""+address+"\",\"salary\":"+salary+"},";
+//                customersJSON+=cusOb;
+//            }
+//            String substring = customersJSON.substring(0, customersJSON.length() - 1);
+//            substring+="]";
 
-            resp.getWriter().write(substring);
+            //How to manipulate JSON using Json Processing
+            JsonArrayBuilder array = Json.createArrayBuilder();
+
+            for (CustomerDTO customer : allCustomers) {
+
+                JsonObjectBuilder object = Json.createObjectBuilder();
+                object.add("id",customer.getId());
+                object.add("name",customer.getName());
+                object.add("address",customer.getAddress());
+                object.add("salary",customer.getSalary());
+                array.add(object.build());
+
+            }
+
+//            resp.setContentType("application/json");//MIME Types
+            resp.getWriter().print(array.build());
 
 
         } catch (ClassNotFoundException e) {

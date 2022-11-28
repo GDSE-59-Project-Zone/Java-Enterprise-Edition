@@ -344,22 +344,33 @@
         //send ajax request to the customer servlet
         $.ajax({
             url: "customer?option=add",
-            method:"post",
-            data:formData
+            method: "post",
+            data: formData,
+            success:function (){
+                loadAllCustomers();
+            }
         });
     });
 
     $("#btnGetAll").click(function () {
-
-
         //send ajax request to the customer servlet
+        loadAllCustomers();
+    });
+
+    function loadAllCustomers(){
+        $("#tblCustomer").empty();
         $.ajax({
             url: "customer",
-            success:function(resp){
+            dataType:"json",
+            success: function (resp) {
                 console.log(resp);
+                for (let cus of resp) {
+                    var row='<tr><td>'+cus.id+'</td><td>'+cus.name+'</td><td>'+cus.address+'</td><td>'+cus.salary+'</td></tr>';
+                    $("#tblCustomer").append(row);
+                }
             }
         });
-    });
+    }
 
 </script>
 </body>
