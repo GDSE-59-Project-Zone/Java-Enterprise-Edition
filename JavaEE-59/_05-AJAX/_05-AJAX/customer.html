@@ -103,11 +103,13 @@
 
     //Use XML format to transfer data using AJAX
     $("#btnGetAll").click(function () {
+        //enable the loader
         $("#loader").css('display', 'block');
         $.ajax({
             url: "db/db.xml",
             success: function (resp) {
 
+                //remove the loader
                 $("#loader").css('display', 'none');
 
                 $("#tblCustomer").empty();
