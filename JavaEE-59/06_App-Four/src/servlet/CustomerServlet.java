@@ -2,9 +2,7 @@ package servlet;
 
 import model.CustomerDTO;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,11 +57,27 @@ public class CustomerServlet extends HttpServlet {
             pstm2.setObject(2, name);
             pstm2.setObject(3, address);
             pstm2.setObject(4, salary);
-            boolean execute2 = pstm2.executeUpdate() > 0;
+            boolean output = pstm2.executeUpdate() > 0;
+            if (output) {
+                JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+                jsonObject.add("state","done");
+                jsonObject.add("message","successful");
+                resp.getWriter().print(jsonObject.build());
+            }
+
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(500);
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(500);
         }
     }
 
@@ -88,10 +102,13 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
-        String name = req.getParameter("name");
-        String address = req.getParameter("address");
-        String salary = req.getParameter("salary");
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject customer = reader.readObject();
+        String id = customer.getString("id");
+        String name = customer.getString("name");
+        String address = customer.getString("address");
+        String salary = customer.getString("salary");
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");

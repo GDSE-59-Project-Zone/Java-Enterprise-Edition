@@ -131,6 +131,7 @@
 
         });
     }
+
     //
 
     function setTextfieldValues(id, name, address, salary) {
@@ -139,8 +140,6 @@
         $("#txtCustomerAddress").val(address);
         $("#txtCustomerSalary").val(salary);
     }
-
-
 
 
     // $("#btnCustomer").click(function(){
@@ -157,8 +156,6 @@
     // });
 
 
-
-
     //add customer to the database
     $("#btnCustomer").click(function () {
 
@@ -167,11 +164,17 @@
 
         //send ajax request to the customer servlet
         $.ajax({
-            url: "customer?option=add",
+            url: "customer",
             method: "post",
             data: formData,
-            success:function (){
+            dataType:"json",
+            success: function (res) {
+                alert(res.message);
                 loadAllCustomers();
+            },
+            error:function(error){
+                var jsObject=JSON.parse(error.responseText);
+                alert(jsObject.message);
             }
         });
     });
@@ -184,26 +187,38 @@
 
 
     //delete customer by id
-    $("#btnCusDelete").click(function(){
-        let id=$("#txtCustomerID").val();
+    $("#btnCusDelete").click(function () {
+        let id = $("#txtCustomerID").val();
         $.ajax({
-            url:"customer?id="+id+"&option=delete",
-            method:"post",
-            success:function(){
+            url: "customer?id=" + id + "",
+            method: "delete",
+            success: function () {
                 loadAllCustomers();
             }
         });
     });
 
     //update customer details
-    $("#btnUpdate").click(function(){
+    $("#btnUpdate").click(function () {
 
-        var formData = $("#customerForm").serialize();
+        let customerID = $("#txtCustomerID").val();
+        let customerName = $("#txtCustomerName").val();
+        let customerAddress = $("#txtCustomerAddress").val();
+        let customerSalary = $("#txtCustomerSalary").val();
+
+        var customer = {
+            id: customerID,
+            name: customerName,
+            address: customerAddress,
+            salary: customerSalary
+        }
+
         $.ajax({
-            url:'customer?option=update',
-            method:'post',
-            data:formData,
-            success:function (){
+            url: 'customer',
+            method: 'put',
+            contentType:"application/json",
+            data:JSON.stringify(customer),
+            success: function () {
                 loadAllCustomers();
             }
 
@@ -213,15 +228,15 @@
     loadAllCustomers();
 
     //load all
-    function loadAllCustomers(){
+    function loadAllCustomers() {
         $("#tblCustomer").empty();
         $.ajax({
             url: "customer",
-            dataType:"json",
+            dataType: "json",
             success: function (resp) {
                 console.log(resp);
                 for (let cus of resp) {
-                    var row='<tr><td>'+cus.id+'</td><td>'+cus.name+'</td><td>'+cus.address+'</td><td>'+cus.salary+'</td></tr>';
+                    var row = '<tr><td>' + cus.id + '</td><td>' + cus.name + '</td><td>' + cus.address + '</td><td>' + cus.salary + '</td></tr>';
                     $("#tblCustomer").append(row);
                 }
                 bindRowClickEvents();
