@@ -102,24 +102,7 @@
                 </tr>
                 </thead>
                 <tbody id="tblCustomer">
-                <%
-                    if (allCustomers != null) {
-                        for (CustomerDTO customer : allCustomers) {
-                %>
-                <tr>
-                    <td><%=customer.getId()%>
-                    </td>
-                    <td><%=customer.getName()%>
-                    </td>
-                    <td><%=customer.getAddress()%>
-                    </td>
-                    <td><%=customer.getSalary()%>
-                    </td>
-                </tr>
-                <%
-                        }
-                    }
-                %>
+
                 </tbody>
             </table>
         </div>
@@ -130,196 +113,34 @@
 <script src="assets/js/jquery-3.6.1.min.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script>
-    // //select the save button and bind a click event for it
-    //
-    // var customers = []; // global scope (Store all the customer records)
-    //
-    // //Button Events
-    // $("#btnCustomer").click(function () {
-    //     //local scope // function scope
-    //
-    //     //select all the four text fields and then get their typed values
-    //     let customerID = $("#txtCustomerID").val();
-    //     let customerName = $("#txtCustomerName").val();
-    //     let customerAddress = $("#txtCustomerAddress").val();
-    //     let customerSalary = $("#txtCustomerSalary").val();
-    //
-    //     // alert(customerID+" "+ customerName+" "+customerAddress+" "+customerSalary);
-    //
-    //     //Put all of these values inside a named container
-    //     // customer
-    //
-    //     var customerObject = {
-    //         id: customerID,
-    //         name: customerName,
-    //         address: customerAddress,
-    //         salary: customerSalary
-    //     }
-    //
-    //     //add the customer object to the array
-    //     customers.push(customerObject);
-    //
-    //
-    //     // console.log(customers);
-    //
-    //     loadAllCustomers();
-    //
-    //     bindRowClickEvents();
-    //
-    // });
-    //
-    // $("#btnCusDelete").click(function () {
-    //     let deleteID = $("#txtCustomerID").val();
-    //
-    //     let option = confirm("Do you really want to delete customer id :" + deleteID);
-    //     if (option){
-    //         if (deleteCustomer(deleteID)) {
-    //             alert("Customer Successfully Deleted..");
-    //             setTextfieldValues("", "", "", "");
-    //         } else {
-    //             alert("No such customer to delete. please check the id");
-    //         }
-    //     }
-    // });
-    //
-    // $("#btnGetAll").click(function () {
-    //     loadAllCustomers();
-    // });
-    //
-    // $("#btnUpdate").click(function () {
-    //     let customerID = $("#txtCustomerID").val();
-    //     let response = updateCustomer(customerID);
-    //     if (response) {
-    //         alert("Customer Updated Successfully");
-    //         setTextfieldValues("", "", "", "");
-    //     } else {
-    //         alert("Update Failed..!");
-    //
-    //     }
-    // });
-    //
-    //
-    // //load all customers
-    // function loadAllCustomers() {
-    //     //remove all the table body content before adding data
-    //     $("#tblCustomer").empty();
-    //
-    //
-    //     // get all customer records from the array
-    //     for (var customer of customers) {
-    //         // console.log(customer);// customer object
-    //
-    //         // add those data to the table row
-    //         // var row= "<tr><td>"+customer.id+"</td><td>"+customer.name+"</td><td>"+customer.address+"</td><td>"+customer.salary+"</td></tr>";
-    //
-    //         // Using String Literals to do the same thing as above
-    //         var row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`;
-    //
-    //         //then add it to the table body of customer table
-    //         $("#tblCustomer").append(row);
-    //     }
-    // }
-    //
-    //
-    // //Set back values from table to text fields
-    // // $('tr'); // select all the rows
-    //
-    // // $("#tblCustomer>tr").click(function () {
-    // //     //how to get the row we click at the moment
-    // //     console.log(this); // we can use this // return tr dom object
-    // // });
-    //
-    // // //to access jQuery method we have to convert the dom object to the jQuery Object
-    // // $("#tblCustomer>tr").click(function () {
-    // //     //how to get the row we click at the moment
-    // //     console.log($(this)); // now the clicked dom object will convert into jQuery object and then will
-    // //     // Allow you to access jQuery methods
-    // // });
-    //
-    // //So let's print the row details which we clicked
-    // // $("#tblCustomer>tr").click(function () {
-    // //     //how to get the row we click at the moment
-    // //     let rowData = $(this).text(); // this will return the entire row text which is clicked
-    // //     console.log(rowData);
-    // // });
-    //
-    // // So we don't want entire row text we want only segregated data
-    //
-    //
-    // function bindRowClickEvents() {
-    //     $("#tblCustomer>tr").click(function () {
-    //         let id = $(this).children(":eq(0)").text();
-    //         let name = $(this).children(":eq(1)").text();
-    //         let address = $(this).children(":eq(2)").text();
-    //         let salary = $(this).children(":eq(3)").text();
-    //         // console.log(id, name, address, salary);
-    //
-    //         //setting table details values to text fields
-    //         $('#txtCustomerID').val(id);
-    //         $('#txtCustomerName').val(name);
-    //         $('#txtCustomerAddress').val(address);
-    //         $('#txtCustomerSalary').val(salary);
-    //
-    //     });
-    // }
-    //
-    // $("#txtCustomerID").on('keyup', function (event) {
-    //     if (event.code == "Enter") {
-    //         let typedId = $("#txtCustomerID").val();
-    //         let customer = searchCustomer(typedId);
-    //         if (customer != null) {
-    //             setTextfieldValues(customer.id, customer.name, customer.address, customer.salary);
-    //         } else {
-    //             alert("There is no cusotmer available for that " + typedId);
-    //             setTextfieldValues("", "", "", "");
-    //         }
-    //     }
-    // });
-    //
-    //
-    // function setTextfieldValues(id, name, address, salary) {
-    //     $("#txtCustomerID").val(id);
-    //     $("#txtCustomerName").val(name);
-    //     $("#txtCustomerAddress").val(address);
-    //     $("#txtCustomerSalary").val(salary);
-    // }
-    //
-    //
-    // function searchCustomer(cusID) {
-    //     for (let customer of customers) {
-    //         if (customer.id == cusID) {
-    //             return customer;
-    //         }
-    //     }
-    //     return null;
-    // }
-    //
-    // function deleteCustomer(customerID) {
-    //     let customer = searchCustomer(customerID);
-    //     if (customer != null) {
-    //         let indexNumber = customers.indexOf(customer);
-    //         customers.splice(indexNumber, 1);
-    //         loadAllCustomers();
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 
-    // function updateCustomer(customerID) {
-    //     let customer = searchCustomer(customerID);
-    //     if (customer != null) {
-    //         customer.id = $("#txtCustomerID").val();
-    //         customer.name = $("#txtCustomerName").val();
-    //         customer.address = $("#txtCustomerAddress").val();
-    //         customer.salary = $("#txtCustomerSalary").val();
-    //         loadAllCustomers();
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
+
+    function bindRowClickEvents() {
+        $("#tblCustomer>tr").click(function () {
+            let id = $(this).children(":eq(0)").text();
+            let name = $(this).children(":eq(1)").text();
+            let address = $(this).children(":eq(2)").text();
+            let salary = $(this).children(":eq(3)").text();
+            // console.log(id, name, address, salary);
+
+            //setting table details values to text fields
+            $('#txtCustomerID').val(id);
+            $('#txtCustomerName').val(name);
+            $('#txtCustomerAddress').val(address);
+            $('#txtCustomerSalary').val(salary);
+
+        });
+    }
     //
-    // }
+
+    function setTextfieldValues(id, name, address, salary) {
+        $("#txtCustomerID").val(id);
+        $("#txtCustomerName").val(name);
+        $("#txtCustomerAddress").val(address);
+        $("#txtCustomerSalary").val(salary);
+    }
+
+
 
 
     // $("#btnCustomer").click(function(){
@@ -336,6 +157,9 @@
     // });
 
 
+
+
+    //add customer to the database
     $("#btnCustomer").click(function () {
 
         var formData = $("#customerForm").serialize();
@@ -352,11 +176,43 @@
         });
     });
 
+    //get all customers from the database
     $("#btnGetAll").click(function () {
         //send ajax request to the customer servlet
         loadAllCustomers();
     });
 
+
+    //delete customer by id
+    $("#btnCusDelete").click(function(){
+        let id=$("#txtCustomerID").val();
+        $.ajax({
+            url:"customer?id="+id+"&option=delete",
+            method:"post",
+            success:function(){
+                loadAllCustomers();
+            }
+        });
+    });
+
+    //update customer details
+    $("#btnUpdate").click(function(){
+
+        var formData = $("#customerForm").serialize();
+        $.ajax({
+            url:'customer?option=update',
+            method:'post',
+            data:formData,
+            success:function (){
+                loadAllCustomers();
+            }
+
+        });
+    });
+
+    loadAllCustomers();
+
+    //load all
     function loadAllCustomers(){
         $("#tblCustomer").empty();
         $.ajax({
@@ -368,8 +224,10 @@
                     var row='<tr><td>'+cus.id+'</td><td>'+cus.name+'</td><td>'+cus.address+'</td><td>'+cus.salary+'</td></tr>';
                     $("#tblCustomer").append(row);
                 }
+                bindRowClickEvents();
             }
         });
+
     }
 
 </script>

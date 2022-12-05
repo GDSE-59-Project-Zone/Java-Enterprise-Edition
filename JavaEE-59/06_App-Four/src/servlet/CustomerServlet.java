@@ -20,49 +20,23 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            ArrayList<CustomerDTO> allCustomers = new ArrayList();
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
             PreparedStatement psmt = connection.prepareStatement("select * from Customer");
             ResultSet rst = psmt.executeQuery();
-            while (rst.next()) {
-                String id = rst.getString("id");
-                String name = rst.getString("name");
-                String address = rst.getString("address");
-                double salary = rst.getDouble("salary");
-                allCustomers.add(new CustomerDTO(id, name, address, salary));
-            }
-
-            //json format
-//            String customersJSON = "[";
-//            for (CustomerDTO customer : allCustomers) {
-//                String id = customer.getId();
-//                String name = customer.getName();
-//                String address = customer.getAddress();
-//                double salary = customer.getSalary();
-//                String cusOb="{\"id\":\""+id+"\",\"name\":\""+name+"\",\"address\":\""+address+"\",\"salary\":"+salary+"},";
-//                customersJSON+=cusOb;
-//            }
-//            String substring = customersJSON.substring(0, customersJSON.length() - 1);
-//            substring+="]";
-
-            //How to manipulate JSON using Json Processing
             JsonArrayBuilder array = Json.createArrayBuilder();
 
-            for (CustomerDTO customer : allCustomers) {
-
+            while (rst.next()) {
                 JsonObjectBuilder object = Json.createObjectBuilder();
-                object.add("id",customer.getId());
-                object.add("name",customer.getName());
-                object.add("address",customer.getAddress());
-                object.add("salary",customer.getSalary());
+                object.add("id",rst.getString("id"));
+                object.add("name",rst.getString("name"));
+                object.add("address",rst.getString("address"));
+                object.add("salary",rst.getDouble("salary"));
                 array.add(object.build());
-
             }
 
-//            resp.setContentType("application/json");//MIME Types
+            resp.setContentType("application/json");//MIME Types
             resp.getWriter().print(array.build());
-
 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -77,38 +51,60 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String address = req.getParameter("address");
         String salary = req.getParameter("salary");
-        String option = req.getParameter("option");
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
-            switch (option) {
-                case "delete":
-                    PreparedStatement pstm1 = connection.prepareStatement("delete from Customer where id=?");
-                    pstm1.setObject(1, id);
-                    boolean execute = pstm1.executeUpdate() > 0;
-                    break;
-                case "add":
-                    PreparedStatement pstm2 = connection.prepareStatement("insert into Customer values(?,?,?,?)");
-                    pstm2.setObject(1, id);
-                    pstm2.setObject(2, name);
-                    pstm2.setObject(3, address);
-                    pstm2.setObject(4, salary);
-                    boolean execute2 = pstm2.executeUpdate() > 0;
-                    break;
-                case "update":
-                    PreparedStatement pstm3 = connection.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
-                    pstm3.setObject(4, id);
-                    pstm3.setObject(1, name);
-                    pstm3.setObject(2, address);
-                    pstm3.setObject(3, salary);
-                    boolean execute3 = pstm3.executeUpdate() > 0;
-                    break;
-            }
+            PreparedStatement pstm2 = connection.prepareStatement("insert into Customer values(?,?,?,?)");
+            pstm2.setObject(1, id);
+            pstm2.setObject(2, name);
+            pstm2.setObject(3, address);
+            pstm2.setObject(4, salary);
+            boolean execute2 = pstm2.executeUpdate() > 0;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+            PreparedStatement pstm1 = connection.prepareStatement("delete from Customer where id=?");
+            pstm1.setObject(1, id);
+
+            boolean execute = pstm1.executeUpdate() > 0;
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        String name = req.getParameter("name");
+        String address = req.getParameter("address");
+        String salary = req.getParameter("salary");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+            PreparedStatement pstm3 = connection.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
+            pstm3.setObject(4, id);
+            pstm3.setObject(1, name);
+            pstm3.setObject(2, address);
+            pstm3.setObject(3, salary);
+            boolean execute3 = pstm3.executeUpdate() > 0;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
