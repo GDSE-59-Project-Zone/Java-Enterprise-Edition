@@ -34,12 +34,27 @@ public class CustomerServlet extends HttpServlet {
             }
 
             resp.setContentType("application/json");//MIME Types
-            resp.getWriter().print(array.build());
+
+            JsonObjectBuilder responseObject = Json.createObjectBuilder();
+            responseObject.add("state","done");
+            responseObject.add("message","Successfully done");
+            responseObject.add("data",array.build());
+            resp.getWriter().print(responseObject.build());
 
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(500);
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(400);
         }
     }
 
@@ -115,7 +130,6 @@ public class CustomerServlet extends HttpServlet {
             resp.getWriter().print(jsonObject.build());
             resp.setStatus(400);
         }
-
     }
 
     @Override
@@ -136,10 +150,31 @@ public class CustomerServlet extends HttpServlet {
             pstm3.setObject(2, address);
             pstm3.setObject(3, salary);
             boolean execute3 = pstm3.executeUpdate() > 0;
+            JsonObjectBuilder responseObject = Json.createObjectBuilder();
+
+            if (execute3) {
+                responseObject.add("state","done");
+                responseObject.add("message","Successfully Updated..!");
+            }else{
+                responseObject.add("state","Error");
+                responseObject.add("message","No Customer For the Given ID..!");
+            }
+            resp.getWriter().print(responseObject.build());
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(500);
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(400);
         }
     }
 }
