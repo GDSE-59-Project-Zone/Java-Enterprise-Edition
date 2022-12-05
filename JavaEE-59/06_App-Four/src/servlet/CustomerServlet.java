@@ -25,6 +25,7 @@ public class CustomerServlet extends HttpServlet {
             JsonArrayBuilder array = Json.createArrayBuilder();
             resp.addHeader("Access-Control-Allow-Origin","*");
 
+
             while (rst.next()) {
                 JsonObjectBuilder object = Json.createObjectBuilder();
                 object.add("id",rst.getString("id"));
@@ -66,6 +67,7 @@ public class CustomerServlet extends HttpServlet {
         String address = req.getParameter("address");
         String salary = req.getParameter("salary");
         resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.setContentType("application/json");//MIME Types
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
@@ -111,6 +113,7 @@ public class CustomerServlet extends HttpServlet {
             pstm1.setObject(1, id);
             boolean execute = pstm1.executeUpdate() > 0;
             JsonObjectBuilder jObject = Json.createObjectBuilder();
+            resp.setContentType("application/json");//MIME Types
             if (execute) {
                 jObject.add("state","done");
                 jObject.add("message","Successfully Deleted..!");
@@ -151,6 +154,7 @@ public class CustomerServlet extends HttpServlet {
         String address = customer.getString("address");
         String salary = customer.getString("salary");
         resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.setContentType("application/json");//MIME Types
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
