@@ -23,6 +23,7 @@ public class CustomerServlet extends HttpServlet {
             PreparedStatement psmt = connection.prepareStatement("select * from Customer");
             ResultSet rst = psmt.executeQuery();
             JsonArrayBuilder array = Json.createArrayBuilder();
+            resp.addHeader("Access-Control-Allow-Origin","*");
 
             while (rst.next()) {
                 JsonObjectBuilder object = Json.createObjectBuilder();
@@ -64,6 +65,7 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String address = req.getParameter("address");
         String salary = req.getParameter("salary");
+        resp.addHeader("Access-Control-Allow-Origin","*");
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
