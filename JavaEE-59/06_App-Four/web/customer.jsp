@@ -114,7 +114,7 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script>
 
-
+    //event bind
     function bindRowClickEvents() {
         $("#tblCustomer>tr").click(function () {
             let id = $(this).children(":eq(0)").text();
@@ -132,7 +132,6 @@
         });
     }
 
-    //
 
     function setTextfieldValues(id, name, address, salary) {
         $("#txtCustomerID").val(id);
@@ -141,19 +140,6 @@
         $("#txtCustomerSalary").val(salary);
     }
 
-
-    // $("#btnCustomer").click(function(){
-    //
-    //     let customerID = $("#txtCustomerID").val();
-    //     let customerName = $("#txtCustomerName").val();
-    //     let customerAddress = $("#txtCustomerAddress").val();
-    //     let customerSalary = $("#txtCustomerSalary").val();
-    //
-    //     //send ajax request to the customer servlet
-    //     $.ajax({
-    //         url:"customer?id="+customerID+"&name="+customerName,
-    //     });
-    // });
 
 
     //add customer to the database
@@ -192,8 +178,13 @@
         $.ajax({
             url: "customer?id=" + id + "",
             method: "delete",
-            success: function () {
+            dataType:"json",
+            success: function (resp) {
+                alert(resp.message);
                 loadAllCustomers();
+            },
+            error:function (error){
+                alert(JSON.parse(error.responseText).message);
             }
         });
     });

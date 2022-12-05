@@ -77,7 +77,7 @@ public class CustomerServlet extends HttpServlet {
             jsonObject.add("state","error");
             jsonObject.add("message",e.getMessage());
             resp.getWriter().print(jsonObject.build());
-            resp.setStatus(500);
+            resp.setStatus(400);
         }
     }
 
@@ -85,17 +85,35 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
             PreparedStatement pstm1 = connection.prepareStatement("delete from Customer where id=?");
             pstm1.setObject(1, id);
-
             boolean execute = pstm1.executeUpdate() > 0;
+            JsonObjectBuilder jObject = Json.createObjectBuilder();
+            if (execute) {
+                jObject.add("state","done");
+                jObject.add("message","Successfully Deleted..!");
+            }else{
+                jObject.add("state","error");
+                jObject.add("message","No such Customer to Delete..!");
+                resp.setStatus(400);
+            }
+            resp.getWriter().print(jObject.build());
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(500);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
+            jsonObject.add("state","error");
+            jsonObject.add("message",e.getMessage());
+            resp.getWriter().print(jsonObject.build());
+            resp.setStatus(400);
         }
 
     }
