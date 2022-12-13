@@ -55,7 +55,7 @@ public class PurchaseOrderServlet extends HttpServlet {
 
                 JsonObjectBuilder responseObject = Json.createObjectBuilder();
                 responseObject.add("state","done");
-                responseObject.add("message","Successfully done");
+                responseObject.add("message","Successfully Purchased");
                 responseObject.add("data","");
                 resp.getWriter().print(responseObject.build());
 
@@ -77,4 +77,11 @@ public class PurchaseOrderServlet extends HttpServlet {
         }
 
     }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.addHeader("Access-Control-Allow-Headers","Content-Type");
+    }
+
 }
