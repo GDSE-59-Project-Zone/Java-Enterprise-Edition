@@ -43,16 +43,15 @@ public class PurchaseOrderServlet extends HttpServlet {
                     pstm2.setObject(1,oid);
                     pstm2.setObject(2,code);
                     pstm2.setObject(3,qty);
-                    pstm2.setObject(3,price);
+                    pstm2.setObject(4,price);
 
                     if (!(pstm2.executeUpdate() > 0)) {
                         connection.rollback();
                         throw new RuntimeException("There is a Problem With Order Details.");
                     }
-
-                    connection.commit();
-                    connection.setAutoCommit(true);
                 }
+                connection.commit();
+                connection.setAutoCommit(true);
 
                 JsonObjectBuilder responseObject = Json.createObjectBuilder();
                 responseObject.add("state","done");
