@@ -14,6 +14,13 @@ public class CustomerFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         System.out.println("Customer Do Filter Method Invoked");
+        String name = servletRequest.getParameter("name");
+        if (name.equals("ijse")){
+            servletResponse.getWriter().write("<h1>Customer Authorised</h1>");
+        }else{
+            servletResponse.getWriter().write("<h1>"+name+" : is Not Authorised</h1>");
+        }
+
     }
 
     @Override
