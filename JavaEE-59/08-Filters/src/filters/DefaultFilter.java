@@ -21,6 +21,7 @@ public class DefaultFilter implements Filter {
         System.out.println(servletPath);
 
         if (servletPath.equals("/customer")) {
+            //if this method invoked any-where inside doFilter method request will be forwarded to the requested servlet
             filterChain.doFilter(servletRequest,servletResponse);
         }else if(servletPath.equals("/item")){
             filterChain.doFilter(servletRequest,servletResponse);
