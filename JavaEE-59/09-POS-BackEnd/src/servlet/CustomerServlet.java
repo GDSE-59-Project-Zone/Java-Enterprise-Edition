@@ -20,8 +20,6 @@ public class CustomerServlet extends HttpServlet {
             PreparedStatement psmt = connection.prepareStatement("select * from Customer");
             ResultSet rst = psmt.executeQuery();
             JsonArrayBuilder array = Json.createArrayBuilder();
-            resp.addHeader("Access-Control-Allow-Origin","*");
-
 
             while (rst.next()) {
                 JsonObjectBuilder object = Json.createObjectBuilder();
@@ -31,8 +29,6 @@ public class CustomerServlet extends HttpServlet {
                 object.add("salary",rst.getDouble("salary"));
                 array.add(object.build());
             }
-
-            resp.setContentType("application/json");//MIME Types
 
             JsonObjectBuilder responseObject = Json.createObjectBuilder();
             responseObject.add("state","done");
@@ -63,8 +59,6 @@ public class CustomerServlet extends HttpServlet {
         String name = req.getParameter("name");
         String address = req.getParameter("address");
         String salary = req.getParameter("salary");
-        resp.addHeader("Access-Control-Allow-Origin","*");
-        resp.setContentType("application/json");//MIME Types
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
@@ -101,7 +95,6 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
-        resp.addHeader("Access-Control-Allow-Origin","*");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -110,7 +103,6 @@ public class CustomerServlet extends HttpServlet {
             pstm1.setObject(1, id);
             boolean execute = pstm1.executeUpdate() > 0;
             JsonObjectBuilder jObject = Json.createObjectBuilder();
-            resp.setContentType("application/json");//MIME Types
             if (execute) {
                 jObject.add("state","done");
                 jObject.add("message","Successfully Deleted..!");
@@ -136,13 +128,6 @@ public class CustomerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin","*");
-        resp.addHeader("Access-Control-Allow-Methods","DELETE,PUT");
-        resp.addHeader("Access-Control-Allow-Headers","Content-Type");
-    }
-
-    @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JsonReader reader = Json.createReader(req.getReader());
         JsonObject customer = reader.readObject();
@@ -150,8 +135,6 @@ public class CustomerServlet extends HttpServlet {
         String name = customer.getString("name");
         String address = customer.getString("address");
         String salary = customer.getString("salary");
-        resp.addHeader("Access-Control-Allow-Origin","*");
-        resp.setContentType("application/json");//MIME Types
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
