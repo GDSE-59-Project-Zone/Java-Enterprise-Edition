@@ -19,17 +19,7 @@ public class CustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
 
-            BasicDataSource bds= new BasicDataSource();
-            bds.setDriverClassName("com.mysql.jdbc.Driver");
-            bds.setUrl("jdbc:mysql://localhost:3306/company");
-            bds.setUsername("root");
-            bds.setPassword("sanu1234");
 
-            //how many total connection you need inside the pool
-            bds.setMaxTotal(2);
-
-            //How many connections should be initialized from the total connections
-            bds.setInitialSize(2);
 
             Connection connection = bds.getConnection();
 
