@@ -1,5 +1,7 @@
 package servlet;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +13,33 @@ import java.sql.*;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
+    public CustomerServlet(){
+        System.out.println("Customer Servlet Constructor Called");
+    }
+
+    @Override
+    public void init() throws ServletException {
+        System.out.println("Customer Servlet Init Method Invoked");
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+
+            BasicDataSource bds= new BasicDataSource();
+            bds.setDriverClassName("com.mysql.jdbc.Driver");
+            bds.setUrl("jdbc:mysql://localhost:3306/company");
+            bds.setUsername("root");
+            bds.setPassword("sanu1234");
+
+            //how many total connection you need inside the pool
+            bds.setMaxTotal(2);
+
+            //How many connections should be initialized from the total connections
+            bds.setInitialSize(2);
+
+            Connection connection = bds.getConnection();
+
             PreparedStatement psmt = connection.prepareStatement("select * from Customer");
             ResultSet rst = psmt.executeQuery();
             JsonArrayBuilder array = Json.createArrayBuilder();
@@ -36,15 +59,7 @@ public class CustomerServlet extends HttpServlet {
             responseObject.add("data",array.build());
             resp.getWriter().print(responseObject.build());
 
-        } catch (ClassNotFoundException e) {
-            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
-            resp.getWriter().print(jsonObject.build());
-            resp.setStatus(500);
-
-        } catch (SQLException e) {
-
+        }catch (SQLException e) {
             JsonObjectBuilder jsonObject = Json.createObjectBuilder();
             jsonObject.add("state","error");
             jsonObject.add("message",e.getMessage());
@@ -170,5 +185,11 @@ public class CustomerServlet extends HttpServlet {
             resp.getWriter().print(jsonObject.build());
             resp.setStatus(400);
         }
+    }
+
+
+    @Override
+    public void destroy() {
+        System.out.println("Customer Servlet Destroyed");
     }
 }
