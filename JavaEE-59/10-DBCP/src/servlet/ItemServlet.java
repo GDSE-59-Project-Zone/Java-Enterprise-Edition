@@ -12,15 +12,6 @@ import java.sql.*;
 @WebServlet(urlPatterns = "/item")
 public class ItemServlet extends HttpServlet {
 
-    public ItemServlet(){
-        System.out.println("Item Servlet Constructor Called");
-    }
-
-    @Override
-    public void init() throws ServletException {
-        System.out.println("Item Servlet Init Method Invoked");
-    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -182,8 +173,4 @@ public class ItemServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void destroy() {
-        System.out.println("Item servlet destroy method invoked");
-    }
 }

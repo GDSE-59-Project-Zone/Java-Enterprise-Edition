@@ -25,6 +25,13 @@ public class A extends HttpServlet {
         ServletContext servletContext = getServletContext();
         int count = (int) servletContext.getAttribute("count");
         System.out.println(count);
+
+        resp.getWriter().print("<h1>"+count+"</h1>");
+
+
+        count=count+1;
+        servletContext.setAttribute("count",count);
+
         System.out.println("A  do get Method Invoked");
     }
 

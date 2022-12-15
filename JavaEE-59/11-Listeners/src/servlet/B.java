@@ -1,5 +1,6 @@
 package servlet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,6 +23,14 @@ public class B extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("B do Get");
+        ServletContext servletContext = getServletContext();
+        int count = (int) servletContext.getAttribute("count");
+        resp.getWriter().print("<h1>"+count+"</h1>");
+
+        count=count+1;
+        servletContext.setAttribute("count",count);
+
+
     }
 
     @Override

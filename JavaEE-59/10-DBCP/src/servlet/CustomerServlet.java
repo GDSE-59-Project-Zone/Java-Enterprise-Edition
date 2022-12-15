@@ -13,14 +13,7 @@ import java.sql.*;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerServlet extends HttpServlet {
-    public CustomerServlet(){
-        System.out.println("Customer Servlet Constructor Called");
-    }
 
-    @Override
-    public void init() throws ServletException {
-        System.out.println("Customer Servlet Init Method Invoked");
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -188,8 +181,4 @@ public class CustomerServlet extends HttpServlet {
     }
 
 
-    @Override
-    public void destroy() {
-        System.out.println("Customer Servlet Destroyed");
-    }
 }
