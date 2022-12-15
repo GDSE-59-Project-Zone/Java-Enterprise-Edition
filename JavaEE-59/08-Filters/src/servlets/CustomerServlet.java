@@ -12,6 +12,6 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Customer Request Recived");
+        System.out.println("Customer Request Received");
     }
 }
