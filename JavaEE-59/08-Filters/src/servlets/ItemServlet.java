@@ -11,6 +11,6 @@ import java.io.IOException;
 public class ItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Item Request Received");
+        resp.getWriter().write("<h1>Generated From Item Servlet<h1>");
     }
 }
