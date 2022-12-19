@@ -1,5 +1,7 @@
 package servlet;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,16 +17,15 @@ public class PurchaseOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection connection=null;
         try {
-            resp.addHeader("Access-Control-Allow-Origin","*");
-            resp.setContentType("application/json");//MIME Types
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+            connection = ( (BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection()
             connection.setAutoCommit(false);
+
             JsonReader reader = Json.createReader(req.getReader());
             JsonObject requestjob = reader.readObject();
             String oid = requestjob.getString("oid");
             String date = requestjob.getString("date");
             String cusID = requestjob.getString("cusID");
+
             PreparedStatement psmt = connection.prepareStatement("Insert into Orders values(?,?,?)");
             psmt.setObject(1,oid);
             psmt.setObject(2,date);
@@ -52,6 +53,7 @@ public class PurchaseOrderServlet extends HttpServlet {
                 }
                 connection.commit();
                 connection.setAutoCommit(true);
+                connection.close();
 
                 JsonObjectBuilder responseObject = Json.createObjectBuilder();
                 responseObject.add("state","done");
@@ -66,6 +68,7 @@ public class PurchaseOrderServlet extends HttpServlet {
             try {
                 connection.rollback();
                 connection.setAutoCommit(true);
+                connection.close();
             } catch (SQLException ex) {
                 jsonObject.add("state","error");
                 jsonObject.add("message",e.getMessage());
@@ -76,12 +79,9 @@ public class PurchaseOrderServlet extends HttpServlet {
             resp.setStatus(500);
         }
 
+
     }
 
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin","*");
-        resp.addHeader("Access-Control-Allow-Headers","Content-Type");
-    }
+
 
 }

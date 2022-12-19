@@ -1,5 +1,7 @@
 package servlet;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,47 +9,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/item")
 public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection()) {
             PreparedStatement psmt = connection.prepareStatement("select * from Item");
             ResultSet rst = psmt.executeQuery();
             JsonArrayBuilder array = Json.createArrayBuilder();
 
             while (rst.next()) {
                 JsonObjectBuilder object = Json.createObjectBuilder();
-                object.add("code",rst.getString("code"));
-                object.add("description",rst.getString("description"));
-                object.add("qtyOnHand",rst.getString("qtyOnHand"));
-                object.add("unitPrice",rst.getDouble("unitPrice"));
+                object.add("code", rst.getString("code"));
+                object.add("description", rst.getString("description"));
+                object.add("qtyOnHand", rst.getString("qtyOnHand"));
+                object.add("unitPrice", rst.getDouble("unitPrice"));
                 array.add(object.build());
             }
 
             JsonObjectBuilder responseObject = Json.createObjectBuilder();
-            responseObject.add("state","done");
-            responseObject.add("message","Successfully done");
-            responseObject.add("data",array.build());
+            responseObject.add("state", "done");
+            responseObject.add("message", "Successfully done");
+            responseObject.add("data", array.build());
             resp.getWriter().print(responseObject.build());
 
-        } catch (ClassNotFoundException e) {
-            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
-            resp.getWriter().print(jsonObject.build());
-            resp.setStatus(500);
-
         } catch (SQLException e) {
-
             JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
+            jsonObject.add("state", "error");
+            jsonObject.add("message", e.getMessage());
             resp.getWriter().print(jsonObject.build());
             resp.setStatus(400);
         }
@@ -59,9 +54,7 @@ public class ItemServlet extends HttpServlet {
         String name = req.getParameter("description");
         String qtyOnHand = req.getParameter("qtyOnHand");
         String unitPrice = req.getParameter("unitPrice");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection()) {
             PreparedStatement pstm2 = connection.prepareStatement("insert into Item values(?,?,?,?)");
             pstm2.setObject(1, code);
             pstm2.setObject(2, name);
@@ -70,22 +63,14 @@ public class ItemServlet extends HttpServlet {
             boolean output = pstm2.executeUpdate() > 0;
             if (output) {
                 JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-                jsonObject.add("state","done");
-                jsonObject.add("message","successful");
+                jsonObject.add("state", "done");
+                jsonObject.add("message", "successful");
                 resp.getWriter().print(jsonObject.build());
             }
-
-        } catch (ClassNotFoundException e) {
-            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
-            resp.getWriter().print(jsonObject.build());
-            resp.setStatus(500);
-
         } catch (SQLException e) {
             JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
+            jsonObject.add("state", "error");
+            jsonObject.add("message", e.getMessage());
             resp.getWriter().print(jsonObject.build());
             resp.setStatus(400);
         }
@@ -96,32 +81,24 @@ public class ItemServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("code");
 
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection()) {
             PreparedStatement pstm1 = connection.prepareStatement("delete from Item where code=?");
             pstm1.setObject(1, id);
             boolean execute = pstm1.executeUpdate() > 0;
             JsonObjectBuilder jObject = Json.createObjectBuilder();
             if (execute) {
-                jObject.add("state","done");
-                jObject.add("message","Successfully Deleted..!");
-            }else{
-                jObject.add("state","error");
-                jObject.add("message","No such Customer to Delete..!");
+                jObject.add("state", "done");
+                jObject.add("message", "Successfully Deleted..!");
+            } else {
+                jObject.add("state", "error");
+                jObject.add("message", "No such Customer to Delete..!");
                 resp.setStatus(400);
             }
             resp.getWriter().print(jObject.build());
-        } catch (ClassNotFoundException e) {
-            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
-            resp.getWriter().print(jsonObject.build());
-            resp.setStatus(500);
         } catch (SQLException e) {
             JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
+            jsonObject.add("state", "error");
+            jsonObject.add("message", e.getMessage());
             resp.getWriter().print(jsonObject.build());
             resp.setStatus(400);
         }
@@ -136,9 +113,7 @@ public class ItemServlet extends HttpServlet {
         String name = customer.getString("description");
         String qtyOnHand = customer.getString("qtyOnHand");
         String unitPrice = customer.getString("unitPrice");
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "sanu1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection()) {
             PreparedStatement pstm3 = connection.prepareStatement("update Item set description=?,qtyOnHand=?,unitPrice=? where code=?");
             pstm3.setObject(4, code);
             pstm3.setObject(1, name);
@@ -148,28 +123,20 @@ public class ItemServlet extends HttpServlet {
             JsonObjectBuilder responseObject = Json.createObjectBuilder();
 
             if (execute3) {
-                responseObject.add("state","done");
-                responseObject.add("message","Successfully Updated..!");
-            }else{
-                responseObject.add("state","Error");
-                responseObject.add("message","No Customer For the Given ID..!");
+                responseObject.add("state", "done");
+                responseObject.add("message", "Successfully Updated..!");
+            } else {
+                responseObject.add("state", "Error");
+                responseObject.add("message", "No Customer For the Given ID..!");
             }
             resp.getWriter().print(responseObject.build());
-        } catch (ClassNotFoundException e) {
-
-            JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
-            resp.getWriter().print(jsonObject.build());
-            resp.setStatus(500);
-
         } catch (SQLException e) {
-
             JsonObjectBuilder jsonObject = Json.createObjectBuilder();
-            jsonObject.add("state","error");
-            jsonObject.add("message",e.getMessage());
+            jsonObject.add("state", "error");
+            jsonObject.add("message", e.getMessage());
             resp.getWriter().print(jsonObject.build());
             resp.setStatus(400);
         }
     }
+
 }
