@@ -17,7 +17,7 @@ public class PurchaseOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection connection=null;
         try {
-            connection = ( (BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection()
+            connection = ( (BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();
             connection.setAutoCommit(false);
 
             JsonReader reader = Json.createReader(req.getReader());
@@ -63,7 +63,7 @@ public class PurchaseOrderServlet extends HttpServlet {
 
             }
 
-        } catch (ClassNotFoundException|SQLException|RuntimeException e) {
+        } catch (SQLException|RuntimeException e) {
             JsonObjectBuilder jsonObject = Json.createObjectBuilder();
             try {
                 connection.rollback();
